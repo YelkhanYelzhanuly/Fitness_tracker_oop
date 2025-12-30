@@ -1,26 +1,36 @@
 package fitness.center;
 
-public class WorkoutPlan {
-    private String type;
-    private double calories;
+import java.util.Objects;
 
-    public WorkoutPlan(String type, double calories) {
-        this.type = type;
-        this.calories = calories;
+public class WorkoutPlan extends Activity {
+    private double intensity;
+    private double duration;
+
+    public WorkoutPlan(String title, double intensity, double duration) {
+        super(title);
+        this.intensity = intensity;
+        this.duration = duration;
     }
-
-    public String getType() { return type; }
-    public double getCalories() { return calories; }
-
-    public void printPlan() {
-        System.out.println("Тренировка: " + type + " [" + calories + " ккал]");
+    @Override
+    public double calculateBurnedCalories() {
+        return intensity * duration;
     }
-
-    public void compareTo(WorkoutPlan other) {
-        if (this.calories > other.calories) {
-            System.out.println(this.type + " сжигает больше, чем " + other.type);
-        } else {
-            System.out.println(other.type + " сжигает больше, чем " + this.type);
-        }
+    @Override
+    public String toString() {
+        return String.format("%s [Длительность: %.1f мин, Калории: %.1f]",
+                getTitle(), duration, calculateBurnedCalories());
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WorkoutPlan)) return false;
+        if (!super.equals(o)) return false;
+        WorkoutPlan that = (WorkoutPlan) o;
+        return Double.compare(that.intensity, intensity) == 0 &&
+                Double.compare(that.duration, duration) == 0;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), intensity, duration);
     }
 }

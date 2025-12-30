@@ -1,29 +1,50 @@
 package fitness.center;
 
+import java.util.List;
+import java.util.Scanner;
+
 public class Main {
-
   public static void main(String[] args) {
+    FitnessCenter center = new FitnessCenter();
+    Scanner scanner = new Scanner(System.in);
 
-    User u1 = new User("Иван", 80.0);
-    User u2 = new User("Анна", 60.0);
+    System.out.print("Сколько пользователей вы хотите добавить? ");
+    int count = scanner.nextInt();
+    scanner.nextLine();1
 
-    WorkoutPlan run = new WorkoutPlan("Бег", 500);
-    WorkoutPlan swim = new WorkoutPlan("Плавание", 400);
+    for (int i = 0; i < count; i++) {
+      System.out.println("\nВвод данных пользователя #" + (i + 1) + ":");
 
-    FitnessApp app = new FitnessApp(u1, run);
+      System.out.print("Введите имя: ");
+      String name = scanner.nextLine();
 
-    u1.printUser();
-    u2.printUser();
-    run.printPlan();
-    swim.printPlan();
+      System.out.print("Введите вес: ");
+      double weight = scanner.nextDouble();
+      scanner.nextLine(); // Очистка буфера после ввода double
 
-    System.out.println("\n--- СРАВНЕНИЕ ---");
-    run.compareTo(swim);
+      center.addUser(new User(name, weight));
+    }
 
-    System.out.println("\n--- РАБОТА ПРИЛОЖЕНИЯ ---");
-    app.showSession();
+    System.out.println("Список пользователей центра:");
+    center.showAllUsers();
 
-    u1.setWeight(75.0);
-    System.out.println("Новый вес Ивана: " + u1.getWeight());
+    System.out.println("\nСортировка пользователей по весу...");
+    center.sortByWeight();
+    center.showAllUsers();
+
+    System.out.print("\nВведите имя для поиска: ");
+    String searchName = scanner.nextLine();
+    List<User> found = center.findUsersByName(searchName);
+
+    if (found.isEmpty()) {
+      System.out.println("Пользователь не найден.");
+    } else {
+      found.forEach(u -> System.out.println("Найдено: " + u));
+    }
+    System.out.println("\nПример тренировочного плана:");
+    Activity run = new WorkoutPlan("Бег", 12.0, 45.0);
+    System.out.println(run.toString());
+
+    scanner.close();
   }
 }
