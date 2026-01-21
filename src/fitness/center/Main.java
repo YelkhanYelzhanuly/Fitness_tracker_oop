@@ -1,50 +1,78 @@
 package fitness.center;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
   public static void main(String[] args) {
-    FitnessCenter center = new FitnessCenter();
-    Scanner scanner = new Scanner(System.in);
+    Scanner sc = new Scanner(System.in);
+    UserDAO dao = new UserDAO();
 
-    System.out.print("Сколько пользователей вы хотите добавить? ");
-    int count = scanner.nextInt();
-    scanner.nextLine();1
+    while (true) {
+      System.out.println("\n=== FITNESS CENTER ===");
+      System.out.println("1. Показать пользователей");
+      System.out.println("2. Добавить пользователя");
+      System.out.println("3. Обновить вес");
+      System.out.println("4. Удалить пользователя");
+      System.out.println("5. Создать тренировку");
+      System.out.println("0. Выход");
+      System.out.print("Выберите пункт: ");
 
-    for (int i = 0; i < count; i++) {
-      System.out.println("\nВвод данных пользователя #" + (i + 1) + ":");
+      int choice = sc.nextInt();
+      sc.nextLine();
 
-      System.out.print("Введите имя: ");
-      String name = scanner.nextLine();
+      if (choice == 1) {
+        dao.findAll().forEach(System.out::println);
+      }
 
-      System.out.print("Введите вес: ");
-      double weight = scanner.nextDouble();
-      scanner.nextLine(); // Очистка буфера после ввода double
+      else if (choice == 2) {
+        System.out.print("Имя: ");
+        String name = sc.nextLine();
+        System.out.print("Вес: ");
+        double weight = sc.nextDouble();
+        sc.nextLine();
+        dao.save(new User(name, weight));
+      }
 
-      center.addUser(new User(name, weight));
+      else if (choice == 3) {
+        System.out.print("Имя: ");
+        String name = sc.nextLine();
+        System.out.print("Новый вес: ");
+        double weight = sc.nextDouble();
+        sc.nextLine();
+        dao.updateWeight(name, weight);
+      }
+
+      else if (choice == 4) {
+        System.out.print("Имя: ");
+        String name = sc.nextLine();
+        dao.delete(name);
+      }
+
+      else if (choice == 5) {
+        System.out.print("Название тренировки: ");
+        String title = sc.nextLine();
+        System.out.print("Интенсивность: ");
+        double intensity = sc.nextDouble();
+        System.out.print("Длительность (мин): ");
+        double duration = sc.nextDouble();
+        sc.nextLine();
+
+        Activity workout = new Workout(title, intensity, duration);
+        System.out.println("\n" + workout);
+      }
+
+      else if (choice == 0) {
+        System.out.println("Выход из программы.");
+        break;
+      }
+
+      else {
+        System.out.println("Неверный пункт меню.");
+      }
     }
 
-    System.out.println("Список пользователей центра:");
-    center.showAllUsers();
-
-    System.out.println("\nСортировка пользователей по весу...");
-    center.sortByWeight();
-    center.showAllUsers();
-
-    System.out.print("\nВведите имя для поиска: ");
-    String searchName = scanner.nextLine();
-    List<User> found = center.findUsersByName(searchName);
-
-    if (found.isEmpty()) {
-      System.out.println("Пользователь не найден.");
-    } else {
-      found.forEach(u -> System.out.println("Найдено: " + u));
-    }
-    System.out.println("\nПример тренировочного плана:");
-    Activity run = new WorkoutPlan("Бег", 12.0, 45.0);
-    System.out.println(run.toString());
-
-    scanner.close();
+    sc.close();
   }
 }
+
