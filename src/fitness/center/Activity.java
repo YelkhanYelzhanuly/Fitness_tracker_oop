@@ -1,7 +1,6 @@
 package fitness.center;
 
 public abstract class Activity {
-
     protected String title;
 
     public Activity(String title) {

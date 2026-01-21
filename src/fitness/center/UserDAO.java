@@ -23,7 +23,6 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
         try {
@@ -43,7 +42,6 @@ public class UserDAO {
         }
         return users;
     }
-
     public void updateWeight(String name, double weight) {
         try {
             Connection c = DriverManager.getConnection(url, user, password);
@@ -57,7 +55,6 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-
     public void delete(String name) {
         try {
             Connection c = DriverManager.getConnection(url, user, password);

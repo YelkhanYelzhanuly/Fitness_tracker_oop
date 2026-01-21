@@ -19,10 +19,9 @@ public class User {
 
     @Override
     public String toString() {
-        return name + " — " + weight + " кг";
+        return name + " - " + weight + " кг";
     }
 
-    // Безопасный equals: сравнение только по имени
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

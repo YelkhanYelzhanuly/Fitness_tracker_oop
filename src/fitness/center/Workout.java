@@ -1,7 +1,6 @@
 package fitness.center;
 
 public class Workout extends Activity {
-
     private double intensity;
     private double duration;
 
@@ -19,7 +18,7 @@ public class Workout extends Activity {
     @Override
     public String toString() {
         return "Тренировка: " + title +
-                "\nИнтенсивность: " + intensity +
+                "\nИнтенсивностб: " + intensity +
                 "\nДлительность: " + duration + " мин" +
                 "\nСожжено калорий: " + calories();
     }
