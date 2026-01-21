@@ -15,63 +15,49 @@ public class Main {
       System.out.println("4. Удалить пользователя");
       System.out.println("5. Создать тренировку");
       System.out.println("0. Выход");
-      System.out.print("Выберите пункт: ");
+      System.out.print("Выбор: ");
 
       int choice = sc.nextInt();
       sc.nextLine();
 
       if (choice == 1) {
         dao.findAll().forEach(System.out::println);
-      }
-
-      else if (choice == 2) {
+      } else if (choice == 2) {
         System.out.print("Имя: ");
         String name = sc.nextLine();
         System.out.print("Вес: ");
         double weight = sc.nextDouble();
         sc.nextLine();
         dao.save(new User(name, weight));
-      }
-
-      else if (choice == 3) {
-        System.out.print("Имя: ");
-        String name = sc.nextLine();
+      } else if (choice == 3) {
+        System.out.print("ID: ");
+        int id = sc.nextInt();
         System.out.print("Новый вес: ");
         double weight = sc.nextDouble();
         sc.nextLine();
-        dao.updateWeight(name, weight);
-      }
-
-      else if (choice == 4) {
-        System.out.print("Имя: ");
-        String name = sc.nextLine();
-        dao.delete(name);
-      }
-
-      else if (choice == 5) {
-        System.out.print("Название тренировки: ");
+        dao.updateWeightById(id, weight);
+      } else if (choice == 4) {
+        System.out.print("ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+        dao.deleteById(id);
+      } else if (choice == 5) {
+        System.out.print("Название: ");
         String title = sc.nextLine();
         System.out.print("Интенсивность: ");
         double intensity = sc.nextDouble();
-        System.out.print("Длительность (мин): ");
+        System.out.print("Длительность: ");
         double duration = sc.nextDouble();
         sc.nextLine();
-
         Activity workout = new Workout(title, intensity, duration);
         System.out.println("\n" + workout);
-      }
-
-      else if (choice == 0) {
-        System.out.println("Выход из программы.");
+      } else if (choice == 0) {
         break;
       }
-
-      else {
-        System.out.println("Неверный пункт меню.");
-      }
     }
-
     sc.close();
   }
 }
+
+
 

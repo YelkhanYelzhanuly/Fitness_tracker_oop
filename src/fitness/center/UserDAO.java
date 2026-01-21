@@ -5,16 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
-
-    private String url = "jdbc:postgresql://localhost:5432/OOPproject";
-    private String user = "postgres";
-    private String password = "414141";
+    private final String url = "jdbc:postgresql://localhost:5432/OOPproject";
+    private final String user = "postgres";
+    private final String password = "414141";
 
     public void save(User userObj) {
         try {
             Connection c = DriverManager.getConnection(url, user, password);
-            PreparedStatement ps =
-                    c.prepareStatement("INSERT INTO users (name, weight) VALUES (?, ?)");
+            PreparedStatement ps = c.prepareStatement("INSERT INTO users (name, weight) VALUES (?, ?)");
             ps.setString(1, userObj.getName());
             ps.setDouble(2, userObj.getWeight());
             ps.executeUpdate();
@@ -28,10 +26,10 @@ public class UserDAO {
         try {
             Connection c = DriverManager.getConnection(url, user, password);
             Statement s = c.createStatement();
-            ResultSet rs = s.executeQuery("SELECT name, weight FROM users");
-
+            ResultSet rs = s.executeQuery("SELECT id, name, weight FROM users");
             while (rs.next()) {
                 users.add(new User(
+                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getDouble("weight")
                 ));
@@ -42,25 +40,24 @@ public class UserDAO {
         }
         return users;
     }
-    public void updateWeight(String name, double weight) {
+    public void updateWeightById(int id, double weight) {
         try {
             Connection c = DriverManager.getConnection(url, user, password);
-            PreparedStatement ps =
-                    c.prepareStatement("UPDATE users SET weight=? WHERE name=?");
+            PreparedStatement ps = c.prepareStatement("UPDATE users SET weight = ? WHERE id = ?");
             ps.setDouble(1, weight);
-            ps.setString(2, name);
+            ps.setInt(2, id);
             ps.executeUpdate();
             c.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void delete(String name) {
+    public void deleteById(int id) {
         try {
             Connection c = DriverManager.getConnection(url, user, password);
             PreparedStatement ps =
-                    c.prepareStatement("DELETE FROM users WHERE name=?");
-            ps.setString(1, name);
+                    c.prepareStatement("DELETE FROM users WHERE id = ?");
+            ps.setInt(1, id);
             ps.executeUpdate();
             c.close();
         } catch (Exception e) {
@@ -68,4 +65,6 @@ public class UserDAO {
         }
     }
 }
+
+
 
