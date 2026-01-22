@@ -4,14 +4,17 @@ public class User {
     private int id;
     private String name;
     private double weight;
+    private String last_name;
 
-    public User(int id, String name, double weight) {
+    public User(int id, String name, String last_name, double weight) {
         this.id = id;
         this.name = name;
+        this.last_name = last_name;
         this.weight = weight;
     }
-    public User(String name, double weight) {
+    public User(String name, String last_name, double weight) {
         this.name = name;
+        this.last_name = last_name;
         this.weight = weight;
     }
     public int getId() {
@@ -20,12 +23,15 @@ public class User {
     public String getName() {
         return name;
     }
+    public String getLastName() {
+        return last_name;
+    }
     public double getWeight() {
         return weight;
     }
     @Override
     public String toString() {
-        return id + " | " + name + " - " + weight + " кг";
+        return id + " | " + name + " " + last_name + " - " + weight + " кг";
     }
     @Override
     public boolean equals(Object o) {
@@ -39,5 +45,7 @@ public class User {
         return Integer.hashCode(id);
     }
 }
+
+
 
 

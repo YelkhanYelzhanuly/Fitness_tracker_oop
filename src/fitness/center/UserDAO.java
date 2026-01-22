@@ -12,9 +12,10 @@ public class UserDAO {
     public void save(User userObj) {
         try {
             Connection c = DriverManager.getConnection(url, user, password);
-            PreparedStatement ps = c.prepareStatement("INSERT INTO users (name, weight) VALUES (?, ?)");
+            PreparedStatement ps = c.prepareStatement("INSERT INTO users (name, last_name, weight) VALUES (?, ?, ?)");
             ps.setString(1, userObj.getName());
-            ps.setDouble(2, userObj.getWeight());
+            ps.setString(2, userObj.getLastName());
+            ps.setDouble(3, userObj.getWeight());
             ps.executeUpdate();
             c.close();
         } catch (Exception e) {
@@ -26,11 +27,12 @@ public class UserDAO {
         try {
             Connection c = DriverManager.getConnection(url, user, password);
             Statement s = c.createStatement();
-            ResultSet rs = s.executeQuery("SELECT id, name, weight FROM users");
+            ResultSet rs = s.executeQuery("SELECT id, name, last_name, weight FROM users");
             while (rs.next()) {
                 users.add(new User(
                         rs.getInt("id"),
                         rs.getString("name"),
+                        rs.getString("last_name"),
                         rs.getDouble("weight")
                 ));
             }
@@ -52,11 +54,22 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+    public void updateLastNameById(int id, String last_name) {
+        try {
+            Connection c = DriverManager.getConnection(url, user, password);
+            PreparedStatement ps = c.prepareStatement("UPDATE users SET last_name = ? WHERE id = ?");
+            ps.setString(1, last_name);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void deleteById(int id) {
         try {
             Connection c = DriverManager.getConnection(url, user, password);
-            PreparedStatement ps =
-                    c.prepareStatement("DELETE FROM users WHERE id = ?");
+            PreparedStatement ps = c.prepareStatement("DELETE FROM users WHERE id = ?");
             ps.setInt(1, id);
             ps.executeUpdate();
             c.close();
@@ -65,6 +78,3 @@ public class UserDAO {
         }
     }
 }
-
-
-
